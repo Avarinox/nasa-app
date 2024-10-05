@@ -30,6 +30,8 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
  * This Router creates the Loader only when the cache is empty.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @final since Symfony 7.1
  */
 class Router extends BaseRouter implements WarmableInterface, ServiceSubscriberInterface
 {
@@ -67,7 +69,7 @@ class Router extends BaseRouter implements WarmableInterface, ServiceSubscriberI
             $this->collection->addResource(new ContainerParametersResource($this->collectedParameters));
 
             try {
-                $containerFile = ($this->paramFetcher)('kernel.cache_dir').'/'.($this->paramFetcher)('kernel.container_class').'.php';
+                $containerFile = ($this->paramFetcher)('kernel.build_dir').'/'.($this->paramFetcher)('kernel.container_class').'.php';
                 if (file_exists($containerFile)) {
                     $this->collection->addResource(new FileResource($containerFile));
                 } else {
@@ -82,10 +84,12 @@ class Router extends BaseRouter implements WarmableInterface, ServiceSubscriberI
 
     public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
-        $currentDir = $this->getOption('cache_dir');
+        if (null === $currentDir = $this->getOption('cache_dir')) {
+            return []; // skip warmUp when router doesn't use cache
+        }
 
         // force cache generation
-        $this->setOption('cache_dir', $cacheDir);
+        $this->setOption('cache_dir', $buildDir ?? $cacheDir);
         $this->getMatcher();
         $this->getGenerator();
 

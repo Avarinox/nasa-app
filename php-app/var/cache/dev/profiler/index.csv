@@ -1,7 +1,5 @@
-8b188c,172.21.0.1,GET,http://127.0.0.1/,1728119845,,404,request
-d7e4e2,172.21.0.1,GET,http://localhost/,1728120671,,404,request
-fd3ee9,172.21.0.1,GET,http://localhost/,1728120684,,404,request
-428994,172.21.0.1,GET,http://localhost/,1728120692,,404,request
-633e5e,172.21.0.1,GET,http://localhost/,1728120693,,404,request
-b85c53,172.21.0.1,GET,http://localhost/favicon.ico,1728120761,8909b6,404,request
-8909b6,172.21.0.1,GET,http://localhost/favicon.ico,1728120761,,404,request
+eedfa1,172.21.0.1,GET,http://localhost/,1728124044,,200,request
+d90c1e,172.21.0.1,GET,http://localhost/,1728124061,,200,request
+c2a07c,172.21.0.1,GET,http://localhost/,1728124061,,200,request
+329f57,172.21.0.1,GET,http://localhost/,1728124063,,200,request
+5fe133,172.21.0.1,GET,http://localhost/,1728124064,,200,request

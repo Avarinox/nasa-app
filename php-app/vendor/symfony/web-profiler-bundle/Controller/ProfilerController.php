@@ -34,21 +34,15 @@ use Twig\Environment;
 class ProfilerController
 {
     private TemplateManager $templateManager;
-    private UrlGeneratorInterface $generator;
-    private ?Profiler $profiler;
-    private Environment $twig;
-    private array $templates;
-    private ?ContentSecurityPolicyHandler $cspHandler;
-    private ?string $baseDir;
 
-    public function __construct(UrlGeneratorInterface $generator, ?Profiler $profiler, Environment $twig, array $templates, ?ContentSecurityPolicyHandler $cspHandler = null, ?string $baseDir = null)
-    {
-        $this->generator = $generator;
-        $this->profiler = $profiler;
-        $this->twig = $twig;
-        $this->templates = $templates;
-        $this->cspHandler = $cspHandler;
-        $this->baseDir = $baseDir;
+    public function __construct(
+        private UrlGeneratorInterface $generator,
+        private ?Profiler $profiler,
+        private Environment $twig,
+        private array $templates,
+        private ?ContentSecurityPolicyHandler $cspHandler = null,
+        private ?string $baseDir = null,
+    ) {
     }
 
     /**
@@ -195,7 +189,6 @@ class ProfilerController
                 'end' => $request->query->get('end', $session?->get('_profiler_search_end')),
                 'limit' => $request->query->get('limit', $session?->get('_profiler_search_limit')),
                 'request' => $request,
-                'render_hidden_by_default' => false,
                 'profile_type' => $request->query->get('type', $session?->get('_profiler_search_type', 'request')),
             ]),
             200,
@@ -275,7 +268,7 @@ class ProfilerController
             $session->set('_profiler_search_type', $profileType);
         }
 
-        if (!empty($token)) {
+        if ($token) {
             return new RedirectResponse($this->generator->generate('_profiler', ['token' => $token]), 302, ['Content-Type' => 'text/html']);
         }
 

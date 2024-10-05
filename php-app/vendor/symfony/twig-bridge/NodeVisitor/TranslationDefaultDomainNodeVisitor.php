@@ -61,7 +61,7 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
             return $node;
         }
 
-        if ($node instanceof FilterExpression && 'trans' === $node->getNode('filter')->getAttribute('value')) {
+        if ($node instanceof FilterExpression && 'trans' === ($node->hasAttribute('twig_callable') ? $node->getAttribute('twig_callable')->getName() : $node->getNode('filter')->getAttribute('value'))) {
             $arguments = $node->getNode('arguments');
             if ($this->isNamedArguments($arguments)) {
                 if (!$arguments->hasNode('domain') && !$arguments->hasNode(1)) {
@@ -114,6 +114,6 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
 
     private function getVarName(): string
     {
-        return sprintf('__internal_%s', hash('sha256', uniqid(mt_rand(), true), false));
+        return sprintf('__internal_%s', hash('xxh128', uniqid(mt_rand(), true)));
     }
 }
